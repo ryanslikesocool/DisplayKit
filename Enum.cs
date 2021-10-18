@@ -1,5 +1,6 @@
+// Developed with love by Ryan Boyer http://ryanjboyer.com <3
+
 using System;
-using UnityEngine;
 
 namespace TScreen
 {

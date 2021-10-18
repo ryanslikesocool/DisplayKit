@@ -1,5 +1,6 @@
+// Developed with love by Ryan Boyer http://ryanjboyer.com <3
+
 using System;
-using UnityEngine;
 
 namespace TScreen
 {
@@ -21,7 +22,7 @@ namespace TScreen
         public ValueSpace valueSpace;
         public Axis axis;
 
-        public ScreenLength(float value,bool respectSafeArea = false, LengthMode lengthMode = LengthMode.Position, ValueSpace valueSpace = ValueSpace.Screen, Axis axis = Axis.Min)
+        public ScreenLength(float value, bool respectSafeArea = false, LengthMode lengthMode = LengthMode.Position, ValueSpace valueSpace = ValueSpace.Screen, Axis axis = Axis.Min)
         {
             this.value = value;
             this.lengthMode = lengthMode;

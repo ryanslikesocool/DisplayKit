@@ -1,4 +1,5 @@
-using System;
+// Developed with love by Ryan Boyer http://ryanjboyer.com <3
+
 using UnityEngine;
 using UnityScreen = UnityEngine.Screen;
 
