@@ -1,37 +1,19 @@
 // Developed with love by Ryan Boyer http://ryanjboyer.com <3
 
-using System;
-
 namespace TScreen
 {
-    [Flags]
-    public enum Edge : byte
-    {
-        Top = 1 << 0,
-        Bottom = 1 << 1,
-        Leading = 1 << 2,
-        Trailing = 1 << 3,
-        Vertical = Top | Bottom,
-        Horizontal = Leading | Trailing,
-        All = Top | Bottom | Leading | Trailing
-    }
-
     public enum HorizontalAlignment
     {
         Leading,
         Center,
-        Trailing,
-        Scale,
-        Fixed
+        Trailing
     }
 
     public enum VerticalAlignment
     {
         Bottom,
         Middle,
-        Top,
-        Scale,
-        Fixed
+        Top
     }
 
     public enum Axis : byte

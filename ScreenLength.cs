@@ -10,7 +10,7 @@ namespace TScreen
         public static readonly ScreenLength Default = new ScreenLength
         {
             value = 1,
-            lengthMode = LengthMode.Position,
+            lengthMode = LengthMode.Scale,
             respectSafeArea = false,
             valueSpace = ValueSpace.World,
             axis = Axis.Horizontal
@@ -22,7 +22,7 @@ namespace TScreen
         public ValueSpace valueSpace;
         public Axis axis;
 
-        public ScreenLength(float value, bool respectSafeArea = false, LengthMode lengthMode = LengthMode.Position, ValueSpace valueSpace = ValueSpace.Screen, Axis axis = Axis.Min)
+        public ScreenLength(float value, bool respectSafeArea = false, LengthMode lengthMode = LengthMode.Scale, ValueSpace valueSpace = ValueSpace.Screen, Axis axis = Axis.Min)
         {
             this.value = value;
             this.lengthMode = lengthMode;

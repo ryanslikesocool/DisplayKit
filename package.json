@@ -1,9 +1,9 @@
 {
   "name": "com.ifelse.tscreen",
   "displayName": "TScreen",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "unity": "2021.1",
-  "description": "Screen space transforms",
+  "description": "Screen transforms made easy.",
   "documentationUrl": "https://github.com/ryanslikesocool/TScreen",
   "author": {
     "name": "Ryan Boyer",
