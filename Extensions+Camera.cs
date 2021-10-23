@@ -6,13 +6,13 @@ namespace TScreen
 {
     public static partial class Extensions
     {
-        public static Vector2 WorldSize(this Camera camera) => Screen.WorldSize(camera);
+        public static Rect WorldBounds(this Camera camera) => Screen.WorldBounds(camera);
 
-        public static float ScreenToWorldScale(this Camera camera) => camera.WorldSize().x / Screen.Width;
-        public static float WorldToScreenScale(this Camera camera) => Screen.Width / camera.WorldSize().x;
+        public static float ScreenToWorldScale(this Camera camera) => camera.WorldBounds().width / Screen.Width;
+        public static float WorldToScreenScale(this Camera camera) => Screen.Width / camera.WorldBounds().width;
 
-        public static Vector2 WorldToViewportScale(this Camera camera) => Vector2.one / camera.WorldSize();
-        public static Vector2 ViewportToWorldScale(this Camera camera) => camera.WorldSize();
+        public static Vector2 WorldToViewportScale(this Camera camera) => Vector2.one / camera.WorldBounds().size;
+        public static Vector2 ViewportToWorldScale(this Camera camera) => camera.WorldBounds().size;
 
         public static float ScreenToWorldLength(this Camera camera, float length) => length * camera.ScreenToWorldScale();
         public static float WorldToScreenLength(this Camera camera, float length) => length * camera.WorldToScreenScale();

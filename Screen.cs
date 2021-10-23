@@ -38,11 +38,15 @@ namespace TScreen
 
         public static Vector2 ViewportToScreen(Vector2 viewportPosition) => viewportPosition * Size;
 
-        public static Vector2 WorldSize(Camera camera)
+        public static Rect WorldBounds(Camera camera = null)
         {
+            if (camera == null)
+            {
+                camera = Camera.main;
+            }
             Vector3 min = camera.ViewportToWorldPoint(ViewportMin);
             Vector3 max = camera.ViewportToWorldPoint(ViewportMax);
-            return (Vector2)(max - min);
+            return new Rect((Vector2)min, (Vector2)(max - min));
         }
     }
 }

@@ -20,7 +20,7 @@ namespace TScreen
 
             if (respectSafeArea)
             {
-                Vector2 worldSize = Camera.main.WorldSize();
+                Vector2 worldSize = Camera.main.WorldBounds().size;
                 Vector2 safeAreaSize = Screen.SafeAreaWorld.size;
 
                 switch (axis.Define())
@@ -51,7 +51,7 @@ namespace TScreen
 
             if (respectSafeArea)
             {
-                Vector2 worldSize = Camera.main.WorldSize();
+                Vector2 worldSize = Camera.main.WorldBounds().size;
                 Rect safeArea = Screen.SafeAreaWorld;
                 safeArea.position += safeArea.size * 0.5f;
 

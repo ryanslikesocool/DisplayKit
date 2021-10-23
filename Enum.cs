@@ -52,10 +52,10 @@ namespace TScreen
     public enum UniformScaling : byte
     {
         None,
-        WidthMatchHeight,
-        HeightMatchWidth,
         WidthScalesHeight,
         HeightScalesWidth,
+        MinScalesMax,
+        MaxScalesMin
     }
 
     public enum LengthMode : byte
