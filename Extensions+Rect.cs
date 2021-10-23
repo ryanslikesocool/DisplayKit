@@ -36,5 +36,8 @@ namespace TScreen
             }
             return rect;
         }
+
+        public static float HorizontalAspect(this Rect rect) => rect.height / rect.width;
+        public static float VerticalAspect(this Rect rect) => rect.width / rect.height;
     }
 }

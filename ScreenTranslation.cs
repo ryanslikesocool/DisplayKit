@@ -52,11 +52,50 @@ namespace TScreen
 
         public Vector2 ToWorldPosition()
         {
-            Vector2 result = Vector2.zero;
-            result.x = horizontalValueSpace.ToWorldPosition(position.x, Axis.Horizontal, respectSafeArea);
-            result.y = verticalValueSpace.ToWorldPosition(position.y, Axis.Vertical, respectSafeArea);
+            float min = Mathf.Min(Screen.Width, Screen.Height);
+            float max = Mathf.Max(Screen.Width, Screen.Height);
 
             Vector2 size = respectSafeArea ? Screen.SafeAreaWorld.size : Camera.main.WorldBounds().size;
+            Vector2 spacePosition = position;
+
+            switch (uniformScaling)
+            {
+                case UniformScaling.WidthScalesHeight:
+                    spacePosition.y = (spacePosition.x / position.x) * position.y;
+                    break;
+                case UniformScaling.HeightScalesWidth:
+                    spacePosition.x = (spacePosition.y / position.y) * position.x;
+                    break;
+                case UniformScaling.MinScalesMax:
+                    if (min == Screen.Width)
+                    {
+                        float aspect = size.VerticalAspect();
+                        spacePosition.y *= aspect;
+                    }
+                    else
+                    {
+                        float aspect = size.HorizontalAspect();
+                        spacePosition.x *= aspect;
+                    }
+                    break;
+                case UniformScaling.MaxScalesMin:
+                    if (max == Screen.Width)
+                    {
+                        float aspect = size.VerticalAspect();
+                        spacePosition.y *= aspect;
+                    }
+                    else
+                    {
+                        float aspect = size.HorizontalAspect();
+                        spacePosition.x *= aspect;
+                    }
+                    break;
+            }
+
+            Vector2 result = Vector2.zero;
+            result.x = horizontalValueSpace.ToWorldPosition(spacePosition.x, Axis.Horizontal, respectSafeArea);
+            result.y = verticalValueSpace.ToWorldPosition(spacePosition.y, Axis.Vertical, respectSafeArea);
+
             Vector2 extents = size * 0.5f;
 
             switch (horizontalAlignment)
@@ -76,39 +115,6 @@ namespace TScreen
                     break;
                 case VerticalAlignment.Bottom:
                     result.y -= extents.y;
-                    break;
-            }
-
-            float min = Mathf.Min(Screen.Width, Screen.Height);
-            float max = Mathf.Max(Screen.Width, Screen.Height);
-
-            switch (uniformScaling)
-            {
-                case UniformScaling.WidthScalesHeight:
-                    result.y = (result.x / position.x) * position.y;
-                    break;
-                case UniformScaling.HeightScalesWidth:
-                    result.x = (result.y / position.y) * position.x;
-                    break;
-                case UniformScaling.MinScalesMax:
-                    if (min == Screen.Width)
-                    {
-                        result.y = (result.x / position.x) * position.y;
-                    }
-                    else
-                    {
-                        result.x = (result.y / position.y) * position.x;
-                    }
-                    break;
-                case UniformScaling.MaxScalesMin:
-                    if (max == Screen.Width)
-                    {
-                        result.y = (result.x / size.x) * size.y;
-                    }
-                    else
-                    {
-                        result.x = (result.y / size.y) * size.x;
-                    }
                     break;
             }
 
