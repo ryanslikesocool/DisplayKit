@@ -2,13 +2,10 @@
 
 using System;
 
-namespace TScreen
-{
+namespace TScreen {
     [Serializable]
-    public struct ScreenLength
-    {
-        public static readonly ScreenLength Default = new ScreenLength
-        {
+    public struct ScreenLength {
+        public static readonly ScreenLength Default = new ScreenLength {
             value = 1,
             lengthMode = LengthMode.Scale,
             respectSafeArea = false,
@@ -22,8 +19,7 @@ namespace TScreen
         public ValueSpace valueSpace;
         public Axis axis;
 
-        public ScreenLength(float value, bool respectSafeArea = false, LengthMode lengthMode = LengthMode.Scale, ValueSpace valueSpace = ValueSpace.Screen, Axis axis = Axis.Min)
-        {
+        public ScreenLength(float value, bool respectSafeArea = false, LengthMode lengthMode = LengthMode.Scale, ValueSpace valueSpace = ValueSpace.Screen, Axis axis = Axis.Min) {
             this.value = value;
             this.lengthMode = lengthMode;
             this.valueSpace = valueSpace;

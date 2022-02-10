@@ -6,11 +6,9 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 #endif
 
-namespace TScreen
-{
+namespace TScreen {
     [Serializable]
-    public struct ScreenTranslation
-    {
+    public struct ScreenTranslation {
         public static readonly ScreenTranslation Default = new ScreenTranslation();
 
         public Vector2 position;
@@ -38,8 +36,7 @@ namespace TScreen
             HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment verticalAlignment = VerticalAlignment.Middle,
             UniformScaling uniformScaling = UniformScaling.None
-        )
-        {
+        ) {
             this.position = position;
             this.respectSafeArea = respectSafeArea;
             this.relativeTo = relativeTo;
@@ -50,16 +47,14 @@ namespace TScreen
             this.uniformScaling = uniformScaling;
         }
 
-        public Vector2 ToWorldPosition()
-        {
+        public Vector2 ToWorldPosition() {
             float min = Mathf.Min(Screen.Width, Screen.Height);
             float max = Mathf.Max(Screen.Width, Screen.Height);
 
             Vector2 size = respectSafeArea ? Screen.SafeAreaWorld.size : Camera.main.WorldBounds().size;
             Vector2 spacePosition = position;
 
-            switch (uniformScaling)
-            {
+            switch (uniformScaling) {
                 case UniformScaling.WidthScalesHeight:
                     spacePosition.y = (spacePosition.x / position.x) * position.y;
                     break;
@@ -67,25 +62,19 @@ namespace TScreen
                     spacePosition.x = (spacePosition.y / position.y) * position.x;
                     break;
                 case UniformScaling.MinScalesMax:
-                    if (min == Screen.Width)
-                    {
+                    if (min == Screen.Width) {
                         float aspect = size.VerticalAspect();
                         spacePosition.y *= aspect;
-                    }
-                    else
-                    {
+                    } else {
                         float aspect = size.HorizontalAspect();
                         spacePosition.x *= aspect;
                     }
                     break;
                 case UniformScaling.MaxScalesMin:
-                    if (max == Screen.Width)
-                    {
+                    if (max == Screen.Width) {
                         float aspect = size.VerticalAspect();
                         spacePosition.y *= aspect;
-                    }
-                    else
-                    {
+                    } else {
                         float aspect = size.HorizontalAspect();
                         spacePosition.x *= aspect;
                     }
@@ -98,28 +87,19 @@ namespace TScreen
 
             Vector2 extents = size * 0.5f;
 
-            switch (horizontalAlignment)
-            {
-                case HorizontalAlignment.Leading:
-                    result.x -= extents.x;
-                    break;
-                case HorizontalAlignment.Trailing:
-                    result.x += extents.x;
-                    break;
-            }
+            result.x += horizontalAlignment switch {
+                HorizontalAlignment.Leading => -extents.x,
+                HorizontalAlignment.Trailing => extents.x,
+                _ => 0
+            };
 
-            switch (verticalAlignment)
-            {
-                case VerticalAlignment.Top:
-                    result.y += extents.y;
-                    break;
-                case VerticalAlignment.Bottom:
-                    result.y -= extents.y;
-                    break;
-            }
+            result.y += verticalAlignment switch {
+                VerticalAlignment.Top => extents.y,
+                VerticalAlignment.Bottom => -extents.y,
+                _ => 0
+            };
 
-            if (relativeTo != null)
-            {
+            if (relativeTo != null) {
                 result += (Vector2)relativeTo.position;
             }
 

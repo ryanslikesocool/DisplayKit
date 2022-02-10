@@ -3,10 +3,8 @@
 using UnityEngine;
 using UnityScreen = UnityEngine.Screen;
 
-namespace TScreen
-{
-    public static class Screen
-    {
+namespace TScreen {
+    public static class Screen {
         private static readonly Vector3 ViewportMin = new Vector3(0, 0, 1);
         private static readonly Vector3 ViewportMax = new Vector3(1, 1, 1);
 
@@ -27,8 +25,7 @@ namespace TScreen
 
         public static ScreenOrientation Orientation => UnityScreen.orientation;
 
-        public static int ViewportToScreen(Axis axis, float viewportLength) => axis switch
-        {
+        public static int ViewportToScreen(Axis axis, float viewportLength) => axis switch {
             Axis.Min => (int)(viewportLength * MinSize),
             Axis.Max => (int)(viewportLength * MaxSize),
             Axis.Horizontal => (int)(viewportLength * Width),
@@ -38,15 +35,32 @@ namespace TScreen
 
         public static Vector2 ViewportToScreen(Vector2 viewportPosition) => viewportPosition * Size;
 
-        public static Rect WorldBounds(Camera camera = null)
-        {
-            if (camera == null)
-            {
+        public static Rect WorldBounds(Camera camera = null) {
+            if (camera == null) {
                 camera = Camera.main;
             }
             Vector3 min = camera.ViewportToWorldPoint(ViewportMin);
             Vector3 max = camera.ViewportToWorldPoint(ViewportMax);
             return new Rect((Vector2)min, (Vector2)(max - min));
         }
+
+        public static Vector2 ViewportPoint(HorizontalAlignment horizontal, VerticalAlignment vertical) {
+            Vector2 point = Vector2.zero;
+            point.x = horizontal switch {
+                HorizontalAlignment.Leading => 0,
+                HorizontalAlignment.Center => 0.5f,
+                HorizontalAlignment.Trailing => 1,
+                _ => 0.5f
+            };
+            point.y = vertical switch {
+                VerticalAlignment.Top => 1,
+                VerticalAlignment.Middle => 0.5f,
+                VerticalAlignment.Bottom => 0,
+                _ => 0.5f
+            };
+            return point;
+        }
+
+        public static Vector2 ScreenPoint(HorizontalAlignment horizontal, VerticalAlignment vertical) => ViewportPoint(horizontal, vertical) * Size;
     }
 }

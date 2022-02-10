@@ -2,10 +2,8 @@
 
 using UnityEngine;
 
-namespace TScreen
-{
-    public static partial class Extensions
-    {
+namespace TScreen {
+    public static partial class Extensions {
         public static Rect WorldBounds(this Camera camera) => Screen.WorldBounds(camera);
 
         public static float ScreenToWorldScale(this Camera camera) => camera.WorldBounds().width / Screen.Width;
@@ -17,20 +15,17 @@ namespace TScreen
         public static float ScreenToWorldLength(this Camera camera, float length) => length * camera.ScreenToWorldScale();
         public static float WorldToScreenLength(this Camera camera, float length) => length * camera.WorldToScreenScale();
 
-        public static float ViewportToWorldLength(this Camera camera, Axis axis, float length)
-        {
+        public static float ViewportToWorldLength(this Camera camera, Axis axis, float length) {
             Vector2 scale = camera.ViewportToWorldScale();
             return axis.Define() == Axis.Horizontal ? length * scale.x : length * scale.y;
         }
 
-        public static float WorldToViewportLength(this Camera camera, Axis axis, float length)
-        {
+        public static float WorldToViewportLength(this Camera camera, Axis axis, float length) {
             Vector2 scale = camera.WorldToViewportScale();
             return axis.Define() == Axis.Horizontal ? length * scale.x : length * scale.y;
         }
 
-        public static Axis Define(this Axis axis) => axis switch
-        {
+        public static Axis Define(this Axis axis) => axis switch {
             Axis.Min => Screen.Width < Screen.Height ? Axis.Horizontal : Axis.Vertical,
             Axis.Max => Screen.Width > Screen.Height ? Axis.Horizontal : Axis.Vertical,
             _ => axis

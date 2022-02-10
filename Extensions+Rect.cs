@@ -2,38 +2,27 @@
 
 using UnityEngine;
 
-namespace TScreen
-{
-    public static partial class Extensions
-    {
+namespace TScreen {
+    public static partial class Extensions {
         public static Rect Transform(this Rect rect, ValueSpace from, ValueSpace to) => rect.Transform(Camera.main, from, to);
 
-        public static Rect Transform(this Rect rect, Camera camera, ValueSpace from, ValueSpace to)
-        {
-            if (from == to)
-            {
+        public static Rect Transform(this Rect rect, Camera camera, ValueSpace from, ValueSpace to) {
+            if (from == to) {
                 return rect;
             }
 
-            switch (from)
-            {
-                case ValueSpace.Screen:
-                    rect = new Rect(camera.ScreenToWorldPoint(rect.position), rect.size * camera.ScreenToWorldScale());
-                    break;
-                case ValueSpace.Viewport:
-                    rect = new Rect(camera.ViewportToWorldPoint(rect.position), rect.size * camera.ViewportToWorldScale());
-                    break;
-            }
+            rect = from switch {
+                ValueSpace.Screen => new Rect(camera.ScreenToWorldPoint(rect.position), rect.size * camera.ScreenToWorldScale()),
+                ValueSpace.Viewport => new Rect(camera.ViewportToWorldPoint(rect.position), rect.size * camera.ViewportToWorldScale()),
+                _ => rect
+            };
 
-            switch (to)
-            {
-                case ValueSpace.Screen:
-                    rect = new Rect(camera.WorldToScreenPoint(rect.position), rect.size * camera.WorldToScreenScale());
-                    break;
-                case ValueSpace.Viewport:
-                    rect = new Rect(camera.WorldToViewportPoint(rect.position), rect.size * camera.WorldToViewportScale());
-                    break;
-            }
+            rect = to switch {
+                ValueSpace.Screen => new Rect(camera.WorldToScreenPoint(rect.position), rect.size * camera.WorldToScreenScale()),
+                ValueSpace.Viewport => new Rect(camera.WorldToViewportPoint(rect.position), rect.size * camera.WorldToViewportScale()),
+                _ => rect
+            };
+
             return rect;
         }
 

@@ -3,13 +3,10 @@
 using System;
 using UnityEngine;
 
-namespace TScreen
-{
+namespace TScreen {
     [Serializable]
-    public struct ScreenSize
-    {
-        public static readonly ScreenSize Default = new ScreenSize
-        {
+    public struct ScreenSize {
+        public static readonly ScreenSize Default = new ScreenSize {
             size = Vector2.one,
             respectSafeArea = true,
             horizontalValueSpace = ValueSpace.World,
@@ -23,8 +20,7 @@ namespace TScreen
         public ValueSpace verticalValueSpace;
         public UniformScaling uniformScaling;
 
-        public Vector2 ToWorldSize()
-        {
+        public Vector2 ToWorldSize() {
             Vector2 result = new Vector2(
                 horizontalValueSpace.ToWorldSize(size.x, Axis.Horizontal, respectSafeArea),
                 verticalValueSpace.ToWorldSize(size.y, Axis.Vertical, respectSafeArea)
@@ -33,8 +29,7 @@ namespace TScreen
             float min = Mathf.Min(Screen.Width, Screen.Height);
             float max = Mathf.Max(Screen.Width, Screen.Height);
 
-            switch (uniformScaling)
-            {
+            switch (uniformScaling) {
                 case UniformScaling.WidthScalesHeight:
                     result.y = (result.x / size.x) * size.y;
                     break;
@@ -42,22 +37,16 @@ namespace TScreen
                     result.x = (result.y / size.y) * size.x;
                     break;
                 case UniformScaling.MinScalesMax:
-                    if (min == Screen.Width)
-                    {
+                    if (min == Screen.Width) {
                         result.y = (result.x / size.x) * size.y;
-                    }
-                    else
-                    {
+                    } else {
                         result.x = (result.y / size.y) * size.x;
                     }
                     break;
                 case UniformScaling.MaxScalesMin:
-                    if (max == Screen.Width)
-                    {
+                    if (max == Screen.Width) {
                         result.y = (result.x / size.x) * size.y;
-                    }
-                    else
-                    {
+                    } else {
                         result.x = (result.y / size.y) * size.x;
                     }
                     break;
