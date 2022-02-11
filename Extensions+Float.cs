@@ -1,19 +1,24 @@
 // Developed with love by Ryan Boyer http://ryanjboyer.com <3
 
 using UnityEngine;
+using Unity.Mathematics;
 
 namespace TScreen {
     public static partial class Extensions {
-        public static float ToWorldSize(this ValueSpace space, float value, Axis axis, bool respectSafeArea) {
+        public static float ToWorldSize(this ValueSpace space, Camera camera, float value, Axis axis, bool respectSafeArea, float distance) {
+            if (camera == null) {
+                camera = Camera.main;
+            }
+
             value = space switch {
-                ValueSpace.Screen => Camera.main.ScreenToWorldLength((int)value),
-                ValueSpace.Viewport => Camera.main.ViewportToWorldLength(axis, value),
+                ValueSpace.Screen => camera.ScreenToWorldLength((int)value, distance),
+                ValueSpace.Viewport => camera.ViewportToWorldLength(axis, value, distance),
                 _ => value
             };
 
             if (respectSafeArea) {
-                Vector2 worldSize = Camera.main.WorldBounds().size;
-                Vector2 safeAreaSize = Screen.SafeAreaWorld.size;
+                float2 worldSize = camera.WorldBounds(distance).size;
+                float2 safeAreaSize = Screen.SafeAreaWorld(camera, distance).size;
 
                 value = axis.Define() switch {
                     Axis.Horizontal => (value / worldSize.x) * safeAreaSize.x,
@@ -25,29 +30,27 @@ namespace TScreen {
             return value;
         }
 
-        public static float ToWorldPosition(this ValueSpace space, float value, Axis axis, bool respectSafeArea) {
-            switch (space) {
-                case ValueSpace.Screen:
-                    value = Camera.main.ScreenToWorldLength((int)value);
-                    break;
-                case ValueSpace.Viewport:
-                    value = Camera.main.ViewportToWorldLength(axis, value);
-                    break;
+        public static float ToWorldPosition(this ValueSpace space, Camera camera, float value, Axis axis, bool respectSafeArea, float distance) {
+            if (camera == null) {
+                camera = Camera.main;
             }
 
+            value = space switch {
+                ValueSpace.Screen => camera.ScreenToWorldLength((int)value, distance),
+                ValueSpace.Viewport => camera.ViewportToWorldLength(axis, value, distance),
+                _ => value
+            };
+
             if (respectSafeArea) {
-                Vector2 worldSize = Camera.main.WorldBounds().size;
-                Rect safeArea = Screen.SafeAreaWorld;
+                float2 worldSize = camera.WorldBounds(distance).size;
+                Rect safeArea = Screen.SafeAreaWorld(camera, distance);
                 safeArea.position += safeArea.size * 0.5f;
 
-                switch (axis.Define()) {
-                    case Axis.Horizontal:
-                        value = (value / worldSize.x) * safeArea.width + safeArea.xMin;
-                        break;
-                    case Axis.Vertical:
-                        value = (value / worldSize.y) * safeArea.height + safeArea.yMin;
-                        break;
-                }
+                value = axis.Define() switch {
+                    Axis.Horizontal => (value / worldSize.x) * safeArea.width + safeArea.xMin,
+                    Axis.Vertical => (value / worldSize.y) * safeArea.height + safeArea.yMin,
+                    _ => value
+                };
             }
 
             return value;

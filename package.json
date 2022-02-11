@@ -1,7 +1,7 @@
 {
   "name": "com.developedwithlove.tscreen",
   "displayName": "TScreen",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "unity": "2021.1",
   "description": "Screen transforms made easy.",
   "documentationUrl": "https://github.com/ryanslikesocool/TScreen",
@@ -10,5 +10,8 @@
     "email": "ryanjboyer@gmail.com",
     "url": "http://ryanjboyer.com/"
   },
-  "type": "library"
+  "type": "library",
+  "dependencies": {
+    "com.unity.mathematics": "1.2.5"
+  }
 }

@@ -1,6 +1,7 @@
 // Developed with love by Ryan Boyer http://ryanjboyer.com <3
 
 using System;
+using UnityEngine;
 
 namespace TScreen {
     [Serializable]
@@ -27,6 +28,6 @@ namespace TScreen {
             this.respectSafeArea = respectSafeArea;
         }
 
-        public float ToWorldLength() => lengthMode == LengthMode.Position ? valueSpace.ToWorldPosition(value, axis, respectSafeArea) : valueSpace.ToWorldSize(value, axis, respectSafeArea);
+        public float ToWorldLength(Camera camera, float distance) => lengthMode == LengthMode.Position ? valueSpace.ToWorldPosition(camera, value, axis, respectSafeArea, distance) : valueSpace.ToWorldSize(camera, value, axis, respectSafeArea, distance);
     }
 }

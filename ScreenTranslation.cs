@@ -2,6 +2,7 @@
 
 using System;
 using UnityEngine;
+using Unity.Mathematics;
 #if ODIN_INSPECTOR_3
 using Sirenix.OdinInspector;
 #endif
@@ -11,7 +12,7 @@ namespace TScreen {
     public struct ScreenTranslation {
         public static readonly ScreenTranslation Default = new ScreenTranslation();
 
-        public Vector2 position;
+        public float2 position;
         public bool respectSafeArea;
         public Transform relativeTo;
 #if ODIN_INSPECTOR_3
@@ -19,16 +20,17 @@ namespace TScreen {
         [HorizontalGroup("V"), LabelText("V Space"), LabelWidth(96)] public ValueSpace verticalValueSpace;
         [HorizontalGroup("H"), LabelText("Alignment"), LabelWidth(96)] public HorizontalAlignment horizontalAlignment;
         [HorizontalGroup("V"), LabelText("Alignment"), LabelWidth(96)] public VerticalAlignment verticalAlignment;
+        [EnableIf("@(horizontalValueSpace == ValueSpace.Viewport || verticalValueSpace == ValueSpace.Viewport)")] public UniformScaling uniformScaling;
 #else
         public ValueSpace horizontalValueSpace;
         public ValueSpace verticalValueSpace;
         public HorizontalAlignment horizontalAlignment;
         public VerticalAlignment verticalAlignment;
-#endif
         public UniformScaling uniformScaling;
+#endif
 
         public ScreenTranslation(
-            Vector2 position,
+            float2 position,
             bool respectSafeArea = false,
             Transform relativeTo = null,
             ValueSpace horizontalValueSpace = ValueSpace.Screen,
@@ -47,63 +49,69 @@ namespace TScreen {
             this.uniformScaling = uniformScaling;
         }
 
-        public Vector2 ToWorldPosition() {
-            float min = Mathf.Min(Screen.Width, Screen.Height);
-            float max = Mathf.Max(Screen.Width, Screen.Height);
-
-            Vector2 size = respectSafeArea ? Screen.SafeAreaWorld.size : Camera.main.WorldBounds().size;
-            Vector2 spacePosition = position;
-
-            switch (uniformScaling) {
-                case UniformScaling.WidthScalesHeight:
-                    spacePosition.y = (spacePosition.x / position.x) * position.y;
-                    break;
-                case UniformScaling.HeightScalesWidth:
-                    spacePosition.x = (spacePosition.y / position.y) * position.x;
-                    break;
-                case UniformScaling.MinScalesMax:
-                    if (min == Screen.Width) {
-                        float aspect = size.VerticalAspect();
-                        spacePosition.y *= aspect;
-                    } else {
-                        float aspect = size.HorizontalAspect();
-                        spacePosition.x *= aspect;
-                    }
-                    break;
-                case UniformScaling.MaxScalesMin:
-                    if (max == Screen.Width) {
-                        float aspect = size.VerticalAspect();
-                        spacePosition.y *= aspect;
-                    } else {
-                        float aspect = size.HorizontalAspect();
-                        spacePosition.x *= aspect;
-                    }
-                    break;
+        public float3 ToWorldPosition(Camera camera, float distance) {
+            if (camera == null) {
+                camera = Camera.main;
             }
 
-            Vector2 result = Vector2.zero;
-            result.x = horizontalValueSpace.ToWorldPosition(spacePosition.x, Axis.Horizontal, respectSafeArea);
-            result.y = verticalValueSpace.ToWorldPosition(spacePosition.y, Axis.Vertical, respectSafeArea);
+            float2 screenPoint = float2.zero;
+            screenPoint.x = horizontalValueSpace switch {
+                ValueSpace.Viewport => camera.ViewportToScreenPoint(new float3(position, distance)).x,
+                ValueSpace.World => camera.WorldToScreenPoint(new float3(position, distance)).x,
+                _ => position.x
+            };
+            screenPoint.y = verticalValueSpace switch {
+                ValueSpace.Viewport => camera.ViewportToScreenPoint(new float3(position, distance)).y,
+                ValueSpace.World => camera.WorldToScreenPoint(new float3(position, distance)).y,
+                _ => position.y
+            };
 
-            Vector2 extents = size * 0.5f;
+            if (horizontalValueSpace == ValueSpace.Viewport) {
+                screenPoint.x = uniformScaling switch {
+                    UniformScaling.HeightScalesWidth => screenPoint.x * Screen.VerticalAspect,
+                    UniformScaling.MinScalesMax => Screen.MaxAxis == Screen.Width ? screenPoint.x * Screen.HorizontalAspect : screenPoint.x,
+                    UniformScaling.MaxScalesMin => Screen.MinAxis == Screen.Width ? screenPoint.x * Screen.HorizontalAspect : screenPoint.x,
+                    _ => screenPoint.x
+                };
+            }
+            if (verticalValueSpace == ValueSpace.Viewport) {
+                screenPoint.y = uniformScaling switch {
+                    UniformScaling.WidthScalesHeight => screenPoint.y * Screen.HorizontalAspect,
+                    UniformScaling.MinScalesMax => Screen.MaxAxis == Screen.Height ? screenPoint.y * Screen.VerticalAspect : screenPoint.y,
+                    UniformScaling.MaxScalesMin => Screen.MinAxis == Screen.Height ? screenPoint.y * Screen.VerticalAspect : screenPoint.y,
+                    _ => screenPoint.y
+                };
+            }
 
-            result.x += horizontalAlignment switch {
-                HorizontalAlignment.Leading => -extents.x,
-                HorizontalAlignment.Trailing => extents.x,
+            screenPoint.x += horizontalAlignment switch {
+                HorizontalAlignment.Leading => 0,
+                HorizontalAlignment.Center => Screen.Extents.x,
+                HorizontalAlignment.Trailing => Screen.Width,
                 _ => 0
             };
 
-            result.y += verticalAlignment switch {
-                VerticalAlignment.Top => extents.y,
-                VerticalAlignment.Bottom => -extents.y,
+            screenPoint.y += verticalAlignment switch {
+                VerticalAlignment.Bottom => 0,
+                VerticalAlignment.Middle => Screen.Extents.y,
+                VerticalAlignment.Top => Screen.Height,
                 _ => 0
             };
+
+            if (respectSafeArea) {
+                screenPoint.x = math.remap(0, Screen.Width, 0, Screen.SafeAreaScreen.width, screenPoint.x);
+                screenPoint.y = math.remap(0, Screen.Height, 0, Screen.SafeAreaScreen.height, screenPoint.y);
+
+                screenPoint.x += Screen.SafeAreaScreen.x;
+                screenPoint.y += Screen.SafeAreaScreen.y;
+            }
+
+            Vector3 worldPoint = camera.ScreenToWorldPoint(new float3(screenPoint, distance));
 
             if (relativeTo != null) {
-                result += (Vector2)relativeTo.position;
+                worldPoint += relativeTo.position;
             }
 
-            return result;
+            return worldPoint;
         }
     }
 }

@@ -1,5 +1,7 @@
 // Developed with love by Ryan Boyer http://ryanjboyer.com <3
 
+using UnityEngine;
+
 namespace TScreen {
     public enum HorizontalAlignment {
         Leading,
@@ -28,10 +30,10 @@ namespace TScreen {
 
     public enum UniformScaling : byte {
         None,
-        WidthScalesHeight,
-        HeightScalesWidth,
-        MinScalesMax,
-        MaxScalesMin
+        [InspectorName("Width scales Height")] WidthScalesHeight,
+        [InspectorName("Height scales Width")] HeightScalesWidth,
+        [InspectorName("Min scales Max")] MinScalesMax,
+        [InspectorName("Max scales Min")] MaxScalesMin
     }
 
     public enum LengthMode : byte {
