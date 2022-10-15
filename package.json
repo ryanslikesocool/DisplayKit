@@ -1,7 +1,7 @@
 {
   "name": "com.developedwithlove.displaykit",
   "displayName": "DisplayKit",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "unity": "2021.3",
   "description": "Screen transforms made easy.",
   "documentationUrl": "https://github.com/ryanslikesocool/DisplayKit",
