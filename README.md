@@ -1,29 +1,22 @@
-# TScreen
+# DisplayKit
 Screen transforms made easy for Unity.
 
-## About
-TScreen is a little library I developed while working on a [THOTH clone](https://twitter.com/ryanslikesocool/status/1449032988725973002?s=21) for mobile.  I thought it would be neat if the 2D gameplay and visuals worked well on any device, instead of being locked to a certain aspect.
-
-**RECOMMENDED INSTALLATION**
-- Add via the Unity Package Manager
+**Recommended Installation** (Unity Package Manager)\
 - "Add package from git URL..."
-- `https://github.com/ryanslikesocool/TScreen.git`
-- Add
+- `https://github.com/ryanslikesocool/DisplayKit.git`
 
-**Not-so Recommended Installation**
-- Get the latest [release](https://github.com/ryanslikesocool/TScreen/releases)
+**Alternate Installation**
+- Get the latest [release](https://github.com/ryanslikesocool/DisplayKit/releases)
 - Open with the desired Unity project
 - Import into Plugins
 
 ## Notice
-TScreen works best with an Orthographic camera.  Some features may work with a perspective camera, but it is not and will not be supported.
+DisplayKit works best with an Orthographic camera.  Some features may work with a perspective camera, but it is not and will not be supported.
 
 ## Usage
-- Import TScreen with `using TScreen;`
-- Optionally override the Unity `Screen` class with `using Screen = TScreen.Screen;`
-	- Certain functionality is not available with `TScreen.Screen`
+- Import DisplayKit with `using DisplayKit;`
 - Use the screen transform types as needed
-	
+
 ## Structs
 ### ScreenLength
 - `value`: the length in `valueSpace` units

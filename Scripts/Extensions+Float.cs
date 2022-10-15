@@ -1,9 +1,9 @@
-// Developed with love by Ryan Boyer http://ryanjboyer.com <3
+// Developed With Love by Ryan Boyer http://ryanjboyer.com <3
 
-using UnityEngine;
 using Unity.Mathematics;
+using UnityEngine;
 
-namespace TScreen {
+namespace DisplayKit {
     public static partial class Extensions {
         public static float ToWorldSize(this ValueSpace space, Camera camera, float value, Axis axis, bool respectSafeArea, float distance) {
             if (camera == null) {
@@ -18,7 +18,7 @@ namespace TScreen {
 
             if (respectSafeArea) {
                 float2 worldSize = camera.WorldBounds(distance).size;
-                float2 safeAreaSize = Screen.SafeAreaWorld(camera, distance).size;
+                float2 safeAreaSize = Display.SafeAreaWorld(camera, distance).size;
 
                 value = axis.Define() switch {
                     Axis.Horizontal => (value / worldSize.x) * safeAreaSize.x,
@@ -43,7 +43,7 @@ namespace TScreen {
 
             if (respectSafeArea) {
                 float2 worldSize = camera.WorldBounds(distance).size;
-                Rect safeArea = Screen.SafeAreaWorld(camera, distance);
+                Rect safeArea = Display.SafeAreaWorld(camera, distance);
                 safeArea.position += safeArea.size * 0.5f;
 
                 value = axis.Define() switch {

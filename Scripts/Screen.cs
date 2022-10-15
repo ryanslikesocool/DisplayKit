@@ -1,16 +1,15 @@
-// Developed with love by Ryan Boyer http://ryanjboyer.com <3
+// Developed With Love by Ryan Boyer http://ryanjboyer.com <3
 
-using UnityEngine;
 using Unity.Mathematics;
-using UnityScreen = UnityEngine.Screen;
+using UnityEngine;
 
-namespace TScreen {
-    public static class Screen {
+namespace DisplayKit {
+    public static class Display {
         private static readonly float2 ViewportMin = new float2(0, 0);
         private static readonly float2 ViewportMax = new float2(1, 1);
 
-        public static int Width => UnityScreen.width;
-        public static int Height => UnityScreen.height;
+        public static int Width => Screen.width;
+        public static int Height => Screen.height;
         public static float2 Size => new float2(Width, Height);
         public static float2 Extents => Size * 0.5f;
 
@@ -22,11 +21,11 @@ namespace TScreen {
 
         public static Rect Rect => new Rect(0, 0, Width, Height);
 
-        public static Rect SafeAreaScreen => UnityScreen.safeArea;
+        public static Rect SafeAreaScreen => Screen.safeArea;
         public static Rect SafeAreaViewport(Camera camera, float distance) => SafeAreaScreen.Transform(camera, ValueSpace.Screen, ValueSpace.Viewport, distance);
         public static Rect SafeAreaWorld(Camera camera, float distance) => SafeAreaScreen.Transform(camera, ValueSpace.Screen, ValueSpace.World, distance);
 
-        public static ScreenOrientation Orientation => UnityScreen.orientation;
+        public static ScreenOrientation Orientation => Screen.orientation;
 
         public static int ViewportToScreen(Axis axis, float viewportLength) => axis switch {
             Axis.Min => (int)(viewportLength * MinAxis),

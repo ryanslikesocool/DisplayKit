@@ -1,9 +1,9 @@
-// Developed with love by Ryan Boyer http://ryanjboyer.com <3
+// Developed With Love by Ryan Boyer http://ryanjboyer.com <3
 
 using System;
 using UnityEngine;
 
-namespace TScreen {
+namespace DisplayKit {
     [Serializable]
     public struct ScreenLength {
         public static readonly ScreenLength Default = new ScreenLength {
