@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace DisplayKit {
     public static partial class Extensions {
-        public static Rect WorldBounds(this Camera camera, float distance) => Display.WorldBounds(camera, distance);
+        public static Rect WorldBounds(this Camera camera, float distance) => DKScreen.WorldBounds(camera, distance);
 
-        public static float ScreenToWorldScale(this Camera camera, float distance) => camera.WorldBounds(distance).width / Display.Width;
-        public static float WorldToScreenScale(this Camera camera, float distance) => Display.Width / camera.WorldBounds(distance).width;
+        public static float ScreenToWorldScale(this Camera camera, float distance) => camera.WorldBounds(distance).width / DKScreen.Width;
+        public static float WorldToScreenScale(this Camera camera, float distance) => DKScreen.Width / camera.WorldBounds(distance).width;
 
         public static float2 WorldToViewportScale(this Camera camera, float distance) => Vector2.one / camera.WorldBounds(distance).size;
         public static float2 ViewportToWorldScale(this Camera camera, float distance) => camera.WorldBounds(distance).size;
@@ -27,8 +27,8 @@ namespace DisplayKit {
         }
 
         public static Axis Define(this Axis axis) => axis switch {
-            Axis.Min => Display.Width < Display.Height ? Axis.Horizontal : Axis.Vertical,
-            Axis.Max => Display.Width > Display.Height ? Axis.Horizontal : Axis.Vertical,
+            Axis.Min => DKScreen.Width < DKScreen.Height ? Axis.Horizontal : Axis.Vertical,
+            Axis.Max => DKScreen.Width > DKScreen.Height ? Axis.Horizontal : Axis.Vertical,
             _ => axis
         };
     }

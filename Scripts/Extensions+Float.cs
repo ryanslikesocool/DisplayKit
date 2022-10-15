@@ -18,7 +18,7 @@ namespace DisplayKit {
 
             if (respectSafeArea) {
                 float2 worldSize = camera.WorldBounds(distance).size;
-                float2 safeAreaSize = Display.SafeAreaWorld(camera, distance).size;
+                float2 safeAreaSize = DKScreen.SafeAreaWorld(camera, distance).size;
 
                 value = axis.Define() switch {
                     Axis.Horizontal => (value / worldSize.x) * safeAreaSize.x,
@@ -43,7 +43,7 @@ namespace DisplayKit {
 
             if (respectSafeArea) {
                 float2 worldSize = camera.WorldBounds(distance).size;
-                Rect safeArea = Display.SafeAreaWorld(camera, distance);
+                Rect safeArea = DKScreen.SafeAreaWorld(camera, distance);
                 safeArea.position += safeArea.size * 0.5f;
 
                 value = axis.Define() switch {

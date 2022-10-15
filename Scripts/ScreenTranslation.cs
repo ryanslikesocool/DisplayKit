@@ -68,41 +68,41 @@ namespace DisplayKit {
 
             if (horizontalValueSpace == ValueSpace.Viewport) {
                 screenPoint.x = uniformScaling switch {
-                    UniformScaling.HeightScalesWidth => screenPoint.x * Display.VerticalAspect,
-                    UniformScaling.MinScalesMax => Display.MaxAxis == Display.Width ? screenPoint.x * Display.HorizontalAspect : screenPoint.x,
-                    UniformScaling.MaxScalesMin => Display.MinAxis == Display.Width ? screenPoint.x * Display.HorizontalAspect : screenPoint.x,
+                    UniformScaling.HeightScalesWidth => screenPoint.x * DKScreen.VerticalAspect,
+                    UniformScaling.MinScalesMax => DKScreen.MaxAxis == DKScreen.Width ? screenPoint.x * DKScreen.HorizontalAspect : screenPoint.x,
+                    UniformScaling.MaxScalesMin => DKScreen.MinAxis == DKScreen.Width ? screenPoint.x * DKScreen.HorizontalAspect : screenPoint.x,
                     _ => screenPoint.x
                 };
             }
             if (verticalValueSpace == ValueSpace.Viewport) {
                 screenPoint.y = uniformScaling switch {
-                    UniformScaling.WidthScalesHeight => screenPoint.y * Display.HorizontalAspect,
-                    UniformScaling.MinScalesMax => Display.MaxAxis == Display.Height ? screenPoint.y * Display.VerticalAspect : screenPoint.y,
-                    UniformScaling.MaxScalesMin => Display.MinAxis == Display.Height ? screenPoint.y * Display.VerticalAspect : screenPoint.y,
+                    UniformScaling.WidthScalesHeight => screenPoint.y * DKScreen.HorizontalAspect,
+                    UniformScaling.MinScalesMax => DKScreen.MaxAxis == DKScreen.Height ? screenPoint.y * DKScreen.VerticalAspect : screenPoint.y,
+                    UniformScaling.MaxScalesMin => DKScreen.MinAxis == DKScreen.Height ? screenPoint.y * DKScreen.VerticalAspect : screenPoint.y,
                     _ => screenPoint.y
                 };
             }
 
             screenPoint.x += horizontalAlignment switch {
                 HorizontalAlignment.Leading => 0,
-                HorizontalAlignment.Center => Display.Extents.x,
-                HorizontalAlignment.Trailing => Display.Width,
+                HorizontalAlignment.Center => DKScreen.Extents.x,
+                HorizontalAlignment.Trailing => DKScreen.Width,
                 _ => 0
             };
 
             screenPoint.y += verticalAlignment switch {
                 VerticalAlignment.Bottom => 0,
-                VerticalAlignment.Middle => Display.Extents.y,
-                VerticalAlignment.Top => Display.Height,
+                VerticalAlignment.Middle => DKScreen.Extents.y,
+                VerticalAlignment.Top => DKScreen.Height,
                 _ => 0
             };
 
             if (respectSafeArea) {
-                screenPoint.x = math.remap(0, Display.Width, 0, Display.SafeAreaScreen.width, screenPoint.x);
-                screenPoint.y = math.remap(0, Display.Height, 0, Display.SafeAreaScreen.height, screenPoint.y);
+                screenPoint.x = (screenPoint.x / DKScreen.Width) * DKScreen.SafeAreaScreen.width;
+                screenPoint.y = (screenPoint.y / DKScreen.Height) * DKScreen.SafeAreaScreen.height;
 
-                screenPoint.x += Display.SafeAreaScreen.x;
-                screenPoint.y += Display.SafeAreaScreen.y;
+                screenPoint.x += DKScreen.SafeAreaScreen.x;
+                screenPoint.y += DKScreen.SafeAreaScreen.y;
             }
 
             Vector3 worldPoint = camera.ScreenToWorldPoint(new float3(screenPoint, distance));

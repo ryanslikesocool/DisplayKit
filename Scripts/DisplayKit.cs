@@ -4,7 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 
 namespace DisplayKit {
-    public static class Display {
+    public static class DKScreen {
         private static readonly float2 ViewportMin = new float2(0, 0);
         private static readonly float2 ViewportMax = new float2(1, 1);
 

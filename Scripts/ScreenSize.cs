@@ -27,8 +27,8 @@ namespace DisplayKit {
                 verticalValueSpace.ToWorldSize(camera, size.y, Axis.Vertical, respectSafeArea, distance)
             );
 
-            float min = Display.MinAxis;
-            float max = Display.MaxAxis;
+            float min = DKScreen.MinAxis;
+            float max = DKScreen.MaxAxis;
 
             switch (uniformScaling) {
                 case UniformScaling.WidthScalesHeight:
@@ -38,14 +38,14 @@ namespace DisplayKit {
                     result.x = (result.y / size.y) * size.x;
                     break;
                 case UniformScaling.MinScalesMax:
-                    if (min == Display.Width) {
+                    if (min == DKScreen.Width) {
                         result.y = (result.x / size.x) * size.y;
                     } else {
                         result.x = (result.y / size.y) * size.x;
                     }
                     break;
                 case UniformScaling.MaxScalesMin:
-                    if (max == Display.Width) {
+                    if (max == DKScreen.Width) {
                         result.y = (result.x / size.x) * size.y;
                     } else {
                         result.x = (result.y / size.y) * size.x;
