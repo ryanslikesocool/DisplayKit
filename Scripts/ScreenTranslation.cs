@@ -1,13 +1,13 @@
-// Developed with love by Ryan Boyer http://ryanjboyer.com <3
+// Developed With Love by Ryan Boyer http://ryanjboyer.com <3
 
 using System;
-using UnityEngine;
 using Unity.Mathematics;
+using UnityEngine;
 #if ODIN_INSPECTOR_3
 using Sirenix.OdinInspector;
 #endif
 
-namespace TScreen {
+namespace DisplayKit {
     [Serializable]
     public struct ScreenTranslation {
         public static readonly ScreenTranslation Default = new ScreenTranslation();
@@ -68,41 +68,41 @@ namespace TScreen {
 
             if (horizontalValueSpace == ValueSpace.Viewport) {
                 screenPoint.x = uniformScaling switch {
-                    UniformScaling.HeightScalesWidth => screenPoint.x * Screen.VerticalAspect,
-                    UniformScaling.MinScalesMax => Screen.MaxAxis == Screen.Width ? screenPoint.x * Screen.HorizontalAspect : screenPoint.x,
-                    UniformScaling.MaxScalesMin => Screen.MinAxis == Screen.Width ? screenPoint.x * Screen.HorizontalAspect : screenPoint.x,
+                    UniformScaling.HeightScalesWidth => screenPoint.x * Display.VerticalAspect,
+                    UniformScaling.MinScalesMax => Display.MaxAxis == Display.Width ? screenPoint.x * Display.HorizontalAspect : screenPoint.x,
+                    UniformScaling.MaxScalesMin => Display.MinAxis == Display.Width ? screenPoint.x * Display.HorizontalAspect : screenPoint.x,
                     _ => screenPoint.x
                 };
             }
             if (verticalValueSpace == ValueSpace.Viewport) {
                 screenPoint.y = uniformScaling switch {
-                    UniformScaling.WidthScalesHeight => screenPoint.y * Screen.HorizontalAspect,
-                    UniformScaling.MinScalesMax => Screen.MaxAxis == Screen.Height ? screenPoint.y * Screen.VerticalAspect : screenPoint.y,
-                    UniformScaling.MaxScalesMin => Screen.MinAxis == Screen.Height ? screenPoint.y * Screen.VerticalAspect : screenPoint.y,
+                    UniformScaling.WidthScalesHeight => screenPoint.y * Display.HorizontalAspect,
+                    UniformScaling.MinScalesMax => Display.MaxAxis == Display.Height ? screenPoint.y * Display.VerticalAspect : screenPoint.y,
+                    UniformScaling.MaxScalesMin => Display.MinAxis == Display.Height ? screenPoint.y * Display.VerticalAspect : screenPoint.y,
                     _ => screenPoint.y
                 };
             }
 
             screenPoint.x += horizontalAlignment switch {
                 HorizontalAlignment.Leading => 0,
-                HorizontalAlignment.Center => Screen.Extents.x,
-                HorizontalAlignment.Trailing => Screen.Width,
+                HorizontalAlignment.Center => Display.Extents.x,
+                HorizontalAlignment.Trailing => Display.Width,
                 _ => 0
             };
 
             screenPoint.y += verticalAlignment switch {
                 VerticalAlignment.Bottom => 0,
-                VerticalAlignment.Middle => Screen.Extents.y,
-                VerticalAlignment.Top => Screen.Height,
+                VerticalAlignment.Middle => Display.Extents.y,
+                VerticalAlignment.Top => Display.Height,
                 _ => 0
             };
 
             if (respectSafeArea) {
-                screenPoint.x = math.remap(0, Screen.Width, 0, Screen.SafeAreaScreen.width, screenPoint.x);
-                screenPoint.y = math.remap(0, Screen.Height, 0, Screen.SafeAreaScreen.height, screenPoint.y);
+                screenPoint.x = math.remap(0, Display.Width, 0, Display.SafeAreaScreen.width, screenPoint.x);
+                screenPoint.y = math.remap(0, Display.Height, 0, Display.SafeAreaScreen.height, screenPoint.y);
 
-                screenPoint.x += Screen.SafeAreaScreen.x;
-                screenPoint.y += Screen.SafeAreaScreen.y;
+                screenPoint.x += Display.SafeAreaScreen.x;
+                screenPoint.y += Display.SafeAreaScreen.y;
             }
 
             Vector3 worldPoint = camera.ScreenToWorldPoint(new float3(screenPoint, distance));

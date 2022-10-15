@@ -1,16 +1,17 @@
 {
-  "name": "com.developedwithlove.tscreen",
-  "displayName": "TScreen",
-  "version": "1.1.1",
-  "unity": "2021.1",
+  "name": "com.developedwithlove.displaykit",
+  "displayName": "DisplayKit",
+  "version": "1.2.0",
+  "unity": "2021.3",
   "description": "Screen transforms made easy.",
-  "documentationUrl": "https://github.com/ryanslikesocool/TScreen",
+  "documentationUrl": "https://github.com/ryanslikesocool/DisplayKit",
   "author": {
     "name": "Ryan Boyer",
     "email": "ryanjboyer@gmail.com",
     "url": "http://ryanjboyer.com/"
   },
   "type": "library",
+  "license": "MIT",
   "dependencies": {
     "com.unity.mathematics": "1.2.5"
   }

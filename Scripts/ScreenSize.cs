@@ -1,10 +1,10 @@
-// Developed with love by Ryan Boyer http://ryanjboyer.com <3
+// Developed With Love by Ryan Boyer http://ryanjboyer.com <3
 
 using System;
-using UnityEngine;
 using Unity.Mathematics;
+using UnityEngine;
 
-namespace TScreen {
+namespace DisplayKit {
     [Serializable]
     public struct ScreenSize {
         public static readonly ScreenSize Default = new ScreenSize {
@@ -27,8 +27,8 @@ namespace TScreen {
                 verticalValueSpace.ToWorldSize(camera, size.y, Axis.Vertical, respectSafeArea, distance)
             );
 
-            float min = Screen.MinAxis;
-            float max = Screen.MaxAxis;
+            float min = Display.MinAxis;
+            float max = Display.MaxAxis;
 
             switch (uniformScaling) {
                 case UniformScaling.WidthScalesHeight:
@@ -38,14 +38,14 @@ namespace TScreen {
                     result.x = (result.y / size.y) * size.x;
                     break;
                 case UniformScaling.MinScalesMax:
-                    if (min == Screen.Width) {
+                    if (min == Display.Width) {
                         result.y = (result.x / size.x) * size.y;
                     } else {
                         result.x = (result.y / size.y) * size.x;
                     }
                     break;
                 case UniformScaling.MaxScalesMin:
-                    if (max == Screen.Width) {
+                    if (max == Display.Width) {
                         result.y = (result.x / size.x) * size.y;
                     } else {
                         result.x = (result.y / size.y) * size.x;

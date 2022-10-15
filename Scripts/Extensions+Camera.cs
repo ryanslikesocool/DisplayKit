@@ -1,14 +1,14 @@
-// Developed with love by Ryan Boyer http://ryanjboyer.com <3
+// Developed With Love by Ryan Boyer http://ryanjboyer.com <3
 
-using UnityEngine;
 using Unity.Mathematics;
+using UnityEngine;
 
-namespace TScreen {
+namespace DisplayKit {
     public static partial class Extensions {
-        public static Rect WorldBounds(this Camera camera, float distance) => Screen.WorldBounds(camera, distance);
+        public static Rect WorldBounds(this Camera camera, float distance) => Display.WorldBounds(camera, distance);
 
-        public static float ScreenToWorldScale(this Camera camera, float distance) => camera.WorldBounds(distance).width / Screen.Width;
-        public static float WorldToScreenScale(this Camera camera, float distance) => Screen.Width / camera.WorldBounds(distance).width;
+        public static float ScreenToWorldScale(this Camera camera, float distance) => camera.WorldBounds(distance).width / Display.Width;
+        public static float WorldToScreenScale(this Camera camera, float distance) => Display.Width / camera.WorldBounds(distance).width;
 
         public static float2 WorldToViewportScale(this Camera camera, float distance) => Vector2.one / camera.WorldBounds(distance).size;
         public static float2 ViewportToWorldScale(this Camera camera, float distance) => camera.WorldBounds(distance).size;
@@ -27,8 +27,8 @@ namespace TScreen {
         }
 
         public static Axis Define(this Axis axis) => axis switch {
-            Axis.Min => Screen.Width < Screen.Height ? Axis.Horizontal : Axis.Vertical,
-            Axis.Max => Screen.Width > Screen.Height ? Axis.Horizontal : Axis.Vertical,
+            Axis.Min => Display.Width < Display.Height ? Axis.Horizontal : Axis.Vertical,
+            Axis.Max => Display.Width > Display.Height ? Axis.Horizontal : Axis.Vertical,
             _ => axis
         };
     }

@@ -1,9 +1,9 @@
-// Developed with love by Ryan Boyer http://ryanjboyer.com <3
+// Developed With Love by Ryan Boyer http://ryanjboyer.com <3
 
-using UnityEngine;
 using Unity.Mathematics;
+using UnityEngine;
 
-namespace TScreen {
+namespace DisplayKit {
     public static partial class Extensions {
         public static Rect Transform(this Rect rect, Camera camera, ValueSpace from, ValueSpace to, float distance) {
             if (from == to) {
