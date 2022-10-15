@@ -11,11 +11,7 @@ Screen transforms made easy for Unity.
 - Import into Plugins
 
 ## Notice
-DisplayKit works best with an Orthographic camera.  Some features may work with a perspective camera, but it is not and will not be supported.
-
-## Usage
-- Import DisplayKit with `using DisplayKit;`
-- Use the screen transform types as needed
+DisplayKit works best with an Orthographic camera.  Some features may work with a perspective camera, but it is not currently supported.
 
 ## Structs
 ### ScreenLength
