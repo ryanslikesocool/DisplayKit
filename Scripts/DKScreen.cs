@@ -25,7 +25,18 @@ namespace DisplayKit {
         public static Rect SafeAreaViewport(Camera camera, float distance) => SafeAreaScreen.Transform(camera, ValueSpace.Screen, ValueSpace.Viewport, distance);
         public static Rect SafeAreaWorld(Camera camera, float distance) => SafeAreaScreen.Transform(camera, ValueSpace.Screen, ValueSpace.World, distance);
 
-        public static ScreenOrientation Orientation => Screen.orientation;
+        public static ScreenOrientation DeviceOrientation => Screen.orientation;
+        public static Orientation Orientation {
+            get {
+                if (Width > Height) {
+                    return Orientation.Horizontal;
+                } else if (Width < Height) {
+                    return Orientation.Vertical;
+                } else {
+                    return Orientation.Square;
+                }
+            }
+        }
 
         public static int ViewportToScreen(Axis axis, float viewportLength) => axis switch {
             Axis.Min => (int)(viewportLength * MinAxis),

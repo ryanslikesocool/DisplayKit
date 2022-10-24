@@ -32,5 +32,7 @@ namespace DisplayKit {
 
         public static float HorizontalAspect(this Rect rect) => rect.height / rect.width;
         public static float VerticalAspect(this Rect rect) => rect.width / rect.height;
+
+        public static float MaxAxis(this Rect rect) => math.max(rect.width, rect.height);
     }
 }
